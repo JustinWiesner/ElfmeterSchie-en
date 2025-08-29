@@ -39,20 +39,7 @@ void setup() {
 
 
 void loop() {
-  /*if(digitalRead(resetTaster) == LOW) 
-  {
-    Serial.println("taster");
-    ToreSP1 = 0;
-    ToreSP2 = 0;
-    display.showNumberDecEx(ToreSP1 * 100 + ToreSP2, 0b01000000, true);
-    state = 0;
-    noTone(sound);
-    torwart.write(90);
-    digitalWrite(LEDrot, LOW);
-    digitalWrite(LEDblau, LOW);*/
-  
-
-
+ 
 
   switch (state) 
   {
@@ -185,19 +172,7 @@ void spielerWechsel() {
 void lichterShow() {
   digitalWrite(LEDrot, HIGH);
   digitalWrite(LEDblau, HIGH);
-  delay(200);
-  digitalWrite(LEDrot, LOW);
-  digitalWrite(LEDblau, LOW);
-  delay(200);
-  digitalWrite(LEDrot, HIGH);
-  digitalWrite(LEDblau, HIGH);
-  delay(200);
-  digitalWrite(LEDrot, LOW);
-  digitalWrite(LEDblau, LOW);
-  delay(200);
-  digitalWrite(LEDrot, HIGH);
-  digitalWrite(LEDblau, HIGH);
-  delay(200);
+  delay(1000);
   digitalWrite(LEDrot, LOW);
   digitalWrite(LEDblau, LOW);
 }
