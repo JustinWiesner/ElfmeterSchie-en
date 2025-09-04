@@ -48,32 +48,38 @@ if (spielModus == true)
   {
     case 0:
       einSpielerSchuss();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
 
     case 1:
       actionTorwartEinSpieler();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
 
     case 2:
       torCheckEinSpieler();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
 
     case 3:
       torJaEinSpieler();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
 
     case 4:
       torNeinEinSpieler();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
 
     case 5:
       versicherungEinSpieler();
-      RESET();
+      ZweiSpieler();
+      RESETone();
       break;
   }
 } 
@@ -83,32 +89,38 @@ else
   {
     case 0:
       ballGeschossenOderNicht();
-      RESETone();
+      EinSpieler ();
+      RESET();
       break;
 
     case 1:
       actionTorwart();
-      RESETone();
+      EinSpieler ();
+      RESET();
       break;
 
     case 2:
       torCheck();
-      RESETone();
+      EinSpieler ();
+      RESET();
       break;
 
     case 3:
       torJa();
+      EinSpieler ();
       RESET();
       break;
 
     case 4:
       torNein();
-      RESETone();
+      EinSpieler();
+      RESET();
       break;
 
     case 5:
       versicherung();
-      RESETone();
+      EinSpieler();
+      RESET();
       break;
   }
 }
@@ -134,6 +146,7 @@ void ballGeschossenOderNicht() {
   delay(1500);
   while (digitalRead(elfmeter) == HIGH) 
   {
+    EinSpieler ();
     RESET();
   }
   stopuhrstart = millis();
@@ -152,6 +165,7 @@ void torCheck() {
 
   state = 3;
   while (digitalRead(sensorTor) == HIGH) {
+    EinSpieler ();
     RESET();
     if (millis() - stopuhrstart > 3000) {
       state = 4;
@@ -219,6 +233,7 @@ void lichterShow() {
 void versicherung() {
   while (digitalRead(elfmeter) == LOW) 
   {
+    EinSpieler ();
     RESET();
   }
   state = 0;
@@ -245,7 +260,8 @@ void einSpielerSchuss() {
   delay(1500);
   while (digitalRead(elfmeter) == HIGH) 
   {
-    RESET();
+     ZweiSpieler();
+    RESETone();
   }
   stopuhrstart = millis();
   state = 1;
@@ -263,7 +279,8 @@ void torCheckEinSpieler() {
 
   state = 3;
   while (digitalRead(sensorTor) == HIGH) {
-    RESET();
+     ZweiSpieler();
+    RESETone();
     if (millis() - stopuhrstart > 3000) {
       state = 4;
       break;
@@ -305,7 +322,8 @@ void lichterShow() {
 void versicherungEinSpieler() {
   while (digitalRead(elfmeter) == LOW) 
   {
-    RESET();
+     ZweiSpieler();
+    RESETone();
   }
   state = 0;
   Serial.println("versicherung");
