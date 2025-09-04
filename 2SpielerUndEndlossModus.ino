@@ -18,6 +18,8 @@ int ToreSP1 = 0;
 int ToreSP2 = 0;
 int Tore = 0;
 int state = 0;
+int mode1SP = 0;
+int mode2SP = 0;
 unsigned long stopuhrstart;
 bool aktuellerSP = false;
 bool spielModus = true;
@@ -38,41 +40,78 @@ void setup() {
 }
 
 
-void loop() {
- 
-
+void loop() 
+{
+if (spielModus == true)
+{
   switch (state) 
   {
     case 0:
-      ballGeschossenOderNicht();
+      einSpielerSchuss();
       RESET();
       break;
 
     case 1:
-      actionTorwart();
+      actionTorwartEinSpieler();
       RESET();
       break;
 
     case 2:
-      torJa();
+      torCheckEinSpieler();
       RESET();
       break;
 
     case 3:
-      ausWertung();
+      torJaEinSpieler();
+      RESET();
+      break;
+
+    case 4:
+      torNeinEinSpieler();
+      RESET();
+      break;
+
+    case 5:
+      versicherungEinSpieler();
+      RESET();
+      break;
+  }
+} 
+else 
+{
+  switch (state) 
+  {
+    case 0:
+      ballGeschossenOderNicht();
+      RESETone();
+      break;
+
+    case 1:
+      actionTorwart();
+      RESETone();
+      break;
+
+    case 2:
+      torCheck();
+      RESETone();
+      break;
+
+    case 3:
+      torJa();
       RESET();
       break;
 
     case 4:
       torNein();
-      RESET();
+      RESETone();
       break;
 
     case 5:
       versicherung();
-      RESET();
+      RESETone();
       break;
   }
+}
 }
 
 void RESET() {
@@ -109,7 +148,7 @@ void actionTorwart() {
   state = 2;
 }
 
-void torJa() {
+void torCheck() {
 
   state = 3;
   while (digitalRead(sensorTor) == HIGH) {
@@ -121,7 +160,7 @@ void torJa() {
   }
 }
 
-void ausWertung() {
+void torJa() {
   spielerWechsel();
   Serial.println("Tor");
   delay(200);
@@ -184,4 +223,106 @@ void versicherung() {
   }
   state = 0;
   Serial.println("versicherung");
+}
+
+
+void RESETone() {
+  while (digitalRead(resetTaster) == LOW) {
+    Serial.println("taster");
+    Tore = 0;
+    display.showNumberDec(Tore, true);
+    state = 0;
+    noTone(sound);
+    torwart.write(90);
+    digitalWrite(LEDrot, LOW);
+    digitalWrite(LEDblau, LOW);
+  }
+}
+
+
+void einSpielerSchuss() {
+  torwart.write(90);
+  delay(1500);
+  while (digitalRead(elfmeter) == HIGH) 
+  {
+    RESET();
+  }
+  stopuhrstart = millis();
+  state = 1;
+  Serial.println("schuss");
+}
+
+void actionTorwartEinSpieler() {
+  delay(50);
+  torwart.write(randompos[random(0, 5)]);
+  Serial.println("torwart");
+  state = 2;
+}
+
+void torCheckEinSpieler() {
+
+  state = 3;
+  while (digitalRead(sensorTor) == HIGH) {
+    RESET();
+    if (millis() - stopuhrstart > 3000) {
+      state = 4;
+      break;
+    }
+  }
+}
+
+void torJaEinSpieler() {
+  Tore++;
+  display.showNumberDec(Tore, true);
+  Serial.println("Tor");
+  delay(200);
+  lichterShow();
+  tone(sound, 1000, 1000);
+  
+  
+  state = 5;
+}
+
+
+void torNeinEinSpieler()
+ {
+    Tore = 0;
+    display.showNumberDec(Tore, true);
+    Serial.println("keinTor");
+    tone(sound, 200, 1000);
+    state = 5;
+}
+
+void lichterShow() {
+  digitalWrite(LEDrot, HIGH);
+  digitalWrite(LEDblau, HIGH);
+  delay(200);
+  digitalWrite(LEDrot, LOW);
+  digitalWrite(LEDblau, LOW);
+  delay(200);
+}
+
+void versicherungEinSpieler() {
+  while (digitalRead(elfmeter) == LOW) 
+  {
+    RESET();
+  }
+  state = 0;
+  Serial.println("versicherung");
+}
+
+void ZweiSpieler ()
+{
+if (digitalRead(zweiSpielerTaster) == LOW)
+{
+  spielModus = false;
+}
+}
+
+void EinSpieler ()
+{
+  if (digitalRead(einSpielerTaster) == LOW)
+{
+  spielModus = true;
+}
 }
