@@ -39,7 +39,7 @@ void setup()
   randomSeed(analogRead(0));
   pinMode(ModusWechselTaster, INPUT_PULLUP);
 
-  /*display.showNumberDecEx(0000, 0b01000000, true);*/
+  
   
 }
 
@@ -91,7 +91,7 @@ if (spielModus == true)
   {
     RESETone();
   }
-if (spielModus == false)
+else
   {
     RESET();
   }
@@ -103,7 +103,7 @@ if (spielModus == true)
   {
     einSpielerSchuss();
   }
-if (spielModus == false)
+else
   {
     ballGeschossenOderNicht();
   }
@@ -115,7 +115,7 @@ void torwartAction()
   {
     actionTorwartEinSpieler();
   }
-  if (spielModus == false)
+  else
   {
     actionTorwart();
   }
@@ -127,7 +127,7 @@ void uberprufung()
   {
     torCheckEinSpieler();
   }
-if (spielModus == false)
+else
   {
     torCheck();
   }
@@ -139,7 +139,7 @@ void torJaOf()
   {
   	torJaEinSpieler();
   }
-if (spielModus == false)
+else
   {
     torJa();
   }
@@ -151,7 +151,7 @@ void torNeinOf()
   {
     torNeinEinSpieler();
   }
-if (spielModus == false)
+else
   {
     torNein();
   }
@@ -163,7 +163,7 @@ if (spielModus == false)
   {
     versicherungEinSpieler();
   }
-if (spielModus == false)
+else
   {
     versicherung();
   }
@@ -189,7 +189,7 @@ void RESET()
 
 void ballGeschossenOderNicht() 
 {
-  display.showNumberDecEx(0000, 0b01000000, true);
+  display.showNumberDecEx(ToreSP1 * 100 + ToreSP2, 0b01000000, true);
   torwart.write(90);
   delay(1500);
   while (digitalRead(elfmeter) == HIGH) 
@@ -406,7 +406,7 @@ void modusWechsel ()
     spielModus = true;
     Serial.println("modus1");
   }
-  if (digitalRead(ModusWechselTaster) == HIGH)
+  else
   {
   spielModus = false;
   Serial.println("modus2");
