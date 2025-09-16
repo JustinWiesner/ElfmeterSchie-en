@@ -21,6 +21,7 @@ unsigned long stopUhrStart;
 bool aktuellerSP = true;
 int modusWechselTaster = A1;
 bool spielModus = true;
+bool modusReset = true;
 
 
 void setup() 
@@ -83,7 +84,7 @@ void loop()
 
 void Reset() 
 {
-  if (spielModus == true) 
+  if (spielModus == true)
   {
     while (digitalRead(resetTaster) == LOW) 
     {
@@ -293,9 +294,36 @@ void ModusWechsel()
 {
   if (digitalRead(modusWechselTaster) == LOW) 
   {
+    if(modusReset == true)
+    {
+      Serial.println("taster");
+      toreSP1 = 0;
+      toreSP2 = 0;
+      display.showNumberDecEx(toreSP1 * 100 + toreSP2, 0b01000000, true);
+      state = 0;
+      noTone(sound);
+      torwart.write(90);
+      digitalWrite(ledRot, LOW);
+      digitalWrite(ledBlau, LOW);
+      modusReset = false;
+    }
     spielModus = true;
     Serial.println("modus1");
-  } else {
+  }
+   else 
+  {
+    if(modusReset == false)
+    {
+      Serial.println("tasterOne");
+      tore = 0;
+      display.showNumberDec(tore, true);
+      state = 0;
+      noTone(sound);
+      torwart.write(90);
+      digitalWrite(ledRot, LOW);
+      digitalWrite(ledBlau, LOW);
+      modusReset = true;
+    }
     spielModus = false;
     Serial.println("modus2");
   }
