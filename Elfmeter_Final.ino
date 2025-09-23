@@ -6,7 +6,6 @@ int elfMeter = 3;
 int ledRot = 13;
 int ledBlau = 12;
 int sound = 6;
-//int torwart = 7;
 int resetTaster = 8;
 int CLK = 4;
 int DIO = 5;
@@ -46,38 +45,32 @@ void loop()
   {
     case 0:
       Schuss();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
 
     case 1:
       ActionTorWart();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
 
     case 2:
       TorCheck();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
 
     case 3:
       TorJa();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
 
     case 4:
       TorNein();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
 
     case 5:
       Versicherung();
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       break;
   }
 }
@@ -124,8 +117,7 @@ void Schuss()
     delay(1500);
     while (digitalRead(elfMeter) == HIGH) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
     }
     stopUhrStart = millis();
     state = 1;
@@ -138,8 +130,7 @@ void Schuss()
     delay(1500);
     while (digitalRead(elfMeter) == HIGH) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
     }
     stopUhrStart = millis();
     state = 1;
@@ -169,8 +160,7 @@ void TorCheck() {
     state = 3;
     while (digitalRead(sensorTor) == LOW) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       if (millis() - stopUhrStart > 3000) 
       {
         state = 4;
@@ -183,8 +173,7 @@ void TorCheck() {
     state = 3;
     while (digitalRead(sensorTor) == LOW) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
       if (millis() - stopUhrStart > 3000) 
       {
         state = 4;
@@ -264,16 +253,14 @@ void Versicherung()
   {
     while (digitalRead(elfMeter) == LOW) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
     }
     state = 0;
     Serial.println("versicherung");
   } else {
     while (digitalRead(elfMeter) == LOW) 
     {
-      ModusWechsel();
-      Reset();
+      ModusUndReset();
     }
     state = 0;
     Serial.println("versicherungEinSpieler");
@@ -342,4 +329,9 @@ void SpielerWechsel()
     aktuellerSP = false;
   }
   display.showNumberDecEx(toreSP1 * 100 + toreSP2, 0b01000000, true);
+}
+void ModusUndReset()
+{
+  Reset();
+  ModusWechsel();
 }
