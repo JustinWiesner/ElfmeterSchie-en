@@ -18,7 +18,7 @@ int tore = 0;
 int state = 0;
 unsigned long stopUhrStart;
 bool aktuellerSP = true;
-int modusWechselTaster = A1;
+int modusWechselTaster = 10;
 bool spielModus = true;
 bool modusReset = true;
 
