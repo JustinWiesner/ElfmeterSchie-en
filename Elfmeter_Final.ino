@@ -22,6 +22,31 @@ int modusWechselTaster = A1;
 bool spielModus = true;
 bool modusReset = true;
 
+#define NOTE_C6  1047
+#define NOTE_C7  2093
+#define NOTE_D7  2349
+#define NOTE_E6  1319
+#define NOTE_E7  2637
+#define NOTE_G6  1568
+#define NOTE_G7  3136
+#define NOTE_B5   988
+#define NOTE_AS5  932
+#define NOTE_A5   880
+#define NOTE_G5   784
+#define NOTE_FS5  740
+#define NOTE_F5   698
+#define NOTE_E5   659
+#define NOTE_DS5  622
+#define NOTE_D5   587
+
+//1-Up
+int melody1Up[]       = { NOTE_E6, NOTE_G6, NOTE_E7, NOTE_C7, NOTE_D7, NOTE_G7 };
+int duration1Up[]     = { 150,     150,     150,     150,     150,     150   };
+//1-Down
+int melodyShrink[]    = { NOTE_C6, NOTE_B5, NOTE_AS5, NOTE_A5, NOTE_G5,
+                          NOTE_FS5, NOTE_F5, NOTE_E5, NOTE_DS5, NOTE_D5 };
+int durationShrink[]  = { 100, 100, 100, 100, 100,
+                          100, 100, 100, 100, 300 };
 
 void setup() 
 {
@@ -191,7 +216,7 @@ void TorJa()
     Serial.println("Tor");
     delay(200);
     LichterShow();
-    tone(sound, 1000, 1000);
+    play1Up();
     if (toreSP1 == 10 || toreSP2 == 10) 
     {
       toreSP1 = 0;
@@ -207,7 +232,7 @@ void TorJa()
     Serial.println("TorEinSpieler");
     delay(200);
     LichterShow();
-    tone(sound, 1000, 1000);
+    play1Up();
 
     state = 5;
   }
@@ -233,7 +258,7 @@ void TorNein()
       display.showNumberDecEx(toreSP1 * 100 + toreSP2, 0b01000000, true);
     }
     Serial.println("keinTor");
-    tone(sound, 200, 1000);
+    playShrink();
 
     state = 5;
   } 
@@ -242,7 +267,7 @@ void TorNein()
     tore = 0;
     display.showNumberDec(tore, true);
     Serial.println("keinTorEinSpieler");
-    tone(sound, 200, 1000);
+    playShrink();
     state = 5;
   }
 }
@@ -334,4 +359,24 @@ void ModusUndReset()
 {
   Reset();
   ModusWechsel();
+}
+
+void play1Up() 
+{
+  for (size_t i = 0; i < sizeof(melody1Up) / sizeof(melody1Up[0]); i++) 
+  {
+    tone(sound, melody1Up[i], duration1Up[i]);
+    delay(duration1Up[i] + 30);
+    noTone(sound);
+  }
+}
+
+void playShrink() 
+{
+  for (size_t i = 0; i < sizeof(melodyShrink) / sizeof(melodyShrink[0]); i++) 
+  {
+    tone(sound, melodyShrink[i], durationShrink[i]);
+    delay(durationShrink[i] + 20);
+    noTone(sound);
+  }
 }
