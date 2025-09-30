@@ -182,27 +182,35 @@ void ActionTorWart()
 void TorCheck() {
   if (spielModus == true) 
   {
-    state = 3;
-    while (digitalRead(sensorTor) == LOW) 
+    if (digitalRead(sensorTor)== LOW)
     {
-      ModusUndReset();
-      if (millis() - stopUhrStart > 3000) 
+      delay(10);
+      state = 3;
+      while (digitalRead(sensorTor) == LOW) 
       {
-        state = 4;
-        break;
+        ModusUndReset();
+        if (millis() - stopUhrStart > 3000) 
+        {
+          state = 4;
+          break;
+        }
       }
     }
   } 
   else 
   {
-    state = 3;
-    while (digitalRead(sensorTor) == LOW) 
+    if(digitalRead(sensorTor)==LOW)
     {
-      ModusUndReset();
-      if (millis() - stopUhrStart > 3000) 
+      delay(10);
+      state = 3;
+      while (digitalRead(sensorTor) == LOW) 
       {
+        ModusUndReset();
+        if (millis() - stopUhrStart > 3000) 
+        {
         state = 4;
         break;
+        }
       }
     }
   }
