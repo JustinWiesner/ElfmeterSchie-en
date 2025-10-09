@@ -390,20 +390,18 @@ void playShrink()
 }
 void ModusWechsel() 
 {
-  static bool lastButtonState = HIGH; // vorheriger Tasterzustand
+  static bool lastButtonState = HIGH;
   bool currentButtonState = digitalRead(modusWechselTaster);
 
-  // Prüfen, ob Taster gerade gedrückt wurde (LOW, da INPUT_PULLUP)
   if (currentButtonState == LOW && lastButtonState == HIGH) 
   {
-    spielModus = !spielModus;  // zwischen true/false wechseln
+    spielModus = !spielModus;
     state = 0;
     noTone(sound);
     torwart.write(90);
     digitalWrite(ledRot, LOW);
     digitalWrite(ledBlau, LOW);
 
-    // Score zurücksetzen je nach Modus
     if (spielModus) 
     {
       toreSP1 = 0;
@@ -417,8 +415,7 @@ void ModusWechsel()
       display.showNumberDec(tore, true);
       Serial.println("Modus: Ein Spieler");
     }
-
-    delay(200); // kleines Entprellen
+    delay(200);
   }
 
   lastButtonState = currentButtonState;
