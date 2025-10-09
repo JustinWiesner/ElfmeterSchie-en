@@ -225,7 +225,7 @@ void TorJa()
     delay(200);
     LichterShow();
     play1Up();
-    if (toreSP1 == 1 || toreSP2 == 1) 
+    if (toreSP1 == 10 || toreSP2 == 10) 
     {
       lichterShow10();
       toreSP1 = 0;
