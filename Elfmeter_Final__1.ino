@@ -189,7 +189,7 @@ void TorCheck() {
       while (digitalRead(sensorTor) == LOW) 
       {
         ModusUndReset();
-        if (millis() - stopUhrStart > 3000) 
+        if (millis() - stopUhrStart > 1700)
         {
           state = 4;
           break;
@@ -206,7 +206,7 @@ void TorCheck() {
       while (digitalRead(sensorTor) == LOW) 
       {
         ModusUndReset();
-        if (millis() - stopUhrStart > 3000) 
+        if (millis() - stopUhrStart > 1700) 
         {
         state = 4;
         break;
@@ -225,8 +225,9 @@ void TorJa()
     delay(200);
     LichterShow();
     play1Up();
-    if (toreSP1 == 10 || toreSP2 == 10) 
+    if (toreSP1 == 1 || toreSP2 == 1) 
     {
+      lichterShow10();
       toreSP1 = 0;
       toreSP2 = 0;
       display.showNumberDecEx(toreSP1 * 100 + toreSP2, 0b01000000, true);
@@ -266,17 +267,18 @@ void TorNein()
       display.showNumberDecEx(toreSP1 * 100 + toreSP2, 0b01000000, true);
     }
     Serial.println("keinTor");
+    state = 5;
     playShrink();
 
-    state = 5;
   } 
   else 
   {
     tore = 0;
     display.showNumberDec(tore, true);
     Serial.println("keinTorEinSpieler");
-    playShrink();
     state = 5;
+    playShrink();
+    
   }
 }
 
@@ -383,6 +385,7 @@ void playShrink()
 {
   for (size_t i = 0; i < sizeof(melodyShrink) / sizeof(melodyShrink[0]); i++) 
   {
+   
     tone(sound, melodyShrink[i], durationShrink[i]);
     delay(durationShrink[i] + 20);
     noTone(sound);
@@ -419,4 +422,22 @@ void ModusWechsel()
   }
 
   lastButtonState = currentButtonState;
+}
+
+void lichterShow10()
+{
+  for (int i = 0; i > 2; ++i)
+  {
+  digitalWrite(ledRot, HIGH);
+  digitalWrite(ledBlau, HIGH);
+  delay(200);
+  digitalWrite(ledRot, LOW);
+  digitalWrite(ledBlau, LOW);
+  delay(200);
+  }
+  digitalWrite(ledRot, HIGH);
+  digitalWrite(ledBlau, HIGH);
+  delay(2500);
+  digitalWrite(ledRot, LOW);
+  digitalWrite(ledBlau, LOW);
 }
